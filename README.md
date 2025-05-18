@@ -2,8 +2,6 @@
 
 Dự án quản các công việc cần làm, người dùng thao tác trực tiếp với các công việc để tăng năng suất kiểm soát và tổ chức thời gian.
 
----
-
 ## Mục lục
 
 - [Giới thiệu](#giới-thiệu)
@@ -15,39 +13,23 @@ Dự án quản các công việc cần làm, người dùng thao tác trực ti
 - [Giấy phép](#giấy-phép)
 - [Liên hệ](#liên-hệ)
 
----
-
 ## Giới thiệu
 
 **Todos** là một ứng dụng quản lý công việc đơn giản, giúp bạn dễ dàng ghi nhớ, theo dõi và hoàn thành các nhiệm vụ hằng ngày. Với giao diện thân thiện và dễ sử dụng, Todos phù hợp cho mọi đối tượng, từ học sinh, sinh viên đến người đi làm.
 
----
-
 ## Tính năng
-
----
 
 ## Cài đặt
 
----
-
 ## Cách sử dụng
-
----
 
 ## Ảnh chụp màn hình
 
----
-
 ## Đóng góp
-
----
 
 ## Giấy phép
 
 Dự án được cấp phép theo MIT. Xem file [LICENSE](./LICENSE) để biết thêm chi tiết.
-
----
 
 ## Liên hệ
 
