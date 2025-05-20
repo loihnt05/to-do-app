@@ -4,6 +4,13 @@ import { Button } from '@/components/ui/button.tsx';
 import * as React from 'react';
 import { Pencil, Trash } from 'lucide-react';
 
+const DEFAULT_TASK = {
+  id: 1,
+  content: 'Hello my name is ho nguyen tai loi',
+  checked: false,
+  date: new Date()
+}
+
 function TodoItem() {
   const [checked, setChecked] = React.useState(false);
   const [date] = React.useState(new Date());
@@ -11,7 +18,7 @@ function TodoItem() {
     setChecked(!checked);
   }
   return (
-    <div className={'flex items-center gap-2 w-full border p-2'}>
+    <div className={'flex items-center gap-2 w-full border p-2 bg-white'}>
       {/*check*/}
       <Checkbox id={'temp'} onCheckedChange={handleCheck} className={'w-6 h-6 bg-gray-200 border'} />
       <div className={'flex flex-col'}>
@@ -19,7 +26,7 @@ function TodoItem() {
         <Label htmlFor={'temp'}
                className={'font-medium font-serif'
                  + `${(checked) ? ' line-through decoration-1 opacity-50 decoration-gray-500 font-light italic' : ''}`}>
-          Hello my name is ho nguyen tai loi
+          {DEFAULT_TASK.content}
         </Label>
         <p className={'font-sans text-xs font-light italic'}>{date.toLocaleString()}</p>
       </div>
