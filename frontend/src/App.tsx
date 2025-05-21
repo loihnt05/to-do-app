@@ -12,25 +12,13 @@ import {
 import TodoItem, { type TodoType } from '@/components/TodoItem.tsx';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Star } from 'lucide-react';
 
 function App() {
     const taskTodo: TodoType[] = [
         {
             id: "0",
             content: 'default',
-        },
-        {
-            id: "1",
-            content: 'default 1',
-        },{
-            id: "2",
-            content: 'default 2',
-        },{
-            id: "3",
-            content: 'default 3',
-        },{
-            id: "4",
-            content: 'default 4',
         },
     ];
     const [value, setValue] = React.useState('');
@@ -53,14 +41,14 @@ function App() {
         <div className="flex flex-col items-center justify-center min-h-svh w-full">
             {/*header*/}
             <h1 className={'text-6xl my-5 font-[cursive] font-bold text-shadow-md'}>ToDos</h1>
-            <div className={'flex gap-2 rounded-md flex-stretch w-2/3'}>
+            <div className={'flex gap-2 rounded-md flex-stretch w-2/3 '}>
                 {/*submit task*/}
-                <Button className={'hover:cursor-pointer'} onClick={handleSubmit}>Add task</Button>
-                <Input className={''} value={value} type='text' placeholder="Aa" onChange={(e) => handleInput(e)}/>
+                <Button className={'hover:cursor-pointer border-2'} onClick={handleSubmit}>Add task</Button>
+                <Input className={'border-4'} value={value} type='text' placeholder="Add task" onChange={(e) => handleInput(e)}/>
                 {/*filter*/}
-                <Select>
-                    <SelectTrigger>
-                        <SelectValue placeholder={"All"}></SelectValue>
+                <Select >
+                    <SelectTrigger className={'border-4'}>
+                        <SelectValue placeholder={"Filter"}></SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
@@ -75,14 +63,15 @@ function App() {
             </div>
 
             {/*display list task*/}
-            <div className={'grid grid-cols-1 gap-2 mt-4 bg-gray-300 p-4 rounded-md w-2/3'}>
+            <div className={'grid grid-cols-1 gap-2 mt-2 bg-gray-300 p-4 rounded-md w-2/3'}>
                 {
                     tasks.map((current, index) => {
                         const todo: TodoType = {
                             id: current.id,
                             content: current.content,
+                            icon: <Star className="w-5 h-5 text-yellow-500" />
                         }
-                        console.log(current.id, " ", current.content);
+                        // console.log(current.id, " ", current.content);
                         return (<TodoItem key={index} props={todo}/>)
                     })
                 }

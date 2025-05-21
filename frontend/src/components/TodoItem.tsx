@@ -12,24 +12,28 @@ const DEFAULT_TASK = {
 }
 export type TodoType = {
   id: string,
-  content: string
+  content: string,
+  icon?: React.ReactNode,
+  checked?: boolean,
+  date?: Date,
 }
-function TodoItem({ props, key } : { props: TodoType , key: number}) {
+function TodoItem({ props } : { props: TodoType }) {
   const [checked, setChecked] = React.useState(false);
   const [date] = React.useState(new Date());
   const handleCheck = () => {
     setChecked(!checked);
   }
   return (
-    <div className={'flex items-center gap-2 w-full border p-2 bg-white'} key={key} >
+    <div className={'flex items-center gap-2 w-full border p-2 bg-white'}  >
       {/*check*/}
-      <Checkbox id={props.id} onCheckedChange={handleCheck} className={'w-6 h-6 bg-gray-200 border'} />
+      <Checkbox id={props.id} onCheckedChange={handleCheck} className={'w-6 h-6 bg-gray-200 border hover:cursor-pointer'} />
       <div className={'flex flex-col truncate w-full'}>
         {/*content*/}
         <Label htmlFor={props.id}
-               className={'font-medium font-serif'
+               className={'font-medium font-serif hover:cursor-pointer'
                  + `${(checked) ? ' line-through decoration-1 opacity-50 decoration-gray-500 font-light italic' : ''}`}>
           {props.content}
+          {props.icon}
         </Label>
         <p className={'font-sans text-xs font-light italic'}>{date.toLocaleString()}</p>
       </div>
