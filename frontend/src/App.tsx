@@ -46,17 +46,17 @@ function App() {
     }
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
-        console.log(e.target.value);
+        // console.log(e.target.value);
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-svh">
+        <div className="flex flex-col items-center justify-center min-h-svh w-full">
             {/*header*/}
-            <h1 className={'text-6xl my-5'}>ToDos</h1>
-            <div className={'flex gap-2 px-4 rounded-md flex-stretch'}>
+            <h1 className={'text-6xl my-5 font-[cursive] font-bold text-shadow-md'}>ToDos</h1>
+            <div className={'flex gap-2 rounded-md flex-stretch w-2/3'}>
                 {/*submit task*/}
                 <Button className={'hover:cursor-pointer'} onClick={handleSubmit}>Add task</Button>
-                <Input value={value} type='text' placeholder="Aa" onChange={(e) => handleInput(e)}/>
+                <Input className={''} value={value} type='text' placeholder="Aa" onChange={(e) => handleInput(e)}/>
                 {/*filter*/}
                 <Select>
                     <SelectTrigger>
@@ -75,14 +75,15 @@ function App() {
             </div>
 
             {/*display list task*/}
-            <div className={'grid grid-cols-1 gap-2 mt-4 bg-gray-300 p-4 rounded-md '}>
+            <div className={'grid grid-cols-1 gap-2 mt-4 bg-gray-300 p-4 rounded-md w-2/3'}>
                 {
                     tasks.map((current, index) => {
                         const todo: TodoType = {
                             id: current.id,
                             content: current.content,
                         }
-                        return (<TodoItem id={index} props={todo}/>)
+                        console.log(current.id, " ", current.content);
+                        return (<TodoItem key={index} props={todo}/>)
                     })
                 }
             </div>

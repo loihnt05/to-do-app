@@ -14,19 +14,19 @@ export type TodoType = {
   id: string,
   content: string
 }
-function TodoItem({ props, id } : { props: TodoType , id: number}) {
+function TodoItem({ props, key } : { props: TodoType , key: number}) {
   const [checked, setChecked] = React.useState(false);
   const [date] = React.useState(new Date());
   const handleCheck = () => {
     setChecked(!checked);
   }
   return (
-    <div className={'flex items-center gap-2 w-full border p-2 bg-white'} id={id.toString()} >
+    <div className={'flex items-center gap-2 w-full border p-2 bg-white'} key={key} >
       {/*check*/}
-      <Checkbox id={'temp'} onCheckedChange={handleCheck} className={'w-6 h-6 bg-gray-200 border'} />
-      <div className={'flex flex-col'}>
+      <Checkbox id={props.id} onCheckedChange={handleCheck} className={'w-6 h-6 bg-gray-200 border'} />
+      <div className={'flex flex-col truncate w-full'}>
         {/*content*/}
-        <Label htmlFor={'temp'}
+        <Label htmlFor={props.id}
                className={'font-medium font-serif'
                  + `${(checked) ? ' line-through decoration-1 opacity-50 decoration-gray-500 font-light italic' : ''}`}>
           {props.content}
