@@ -10,15 +10,18 @@ const DEFAULT_TASK = {
   checked: false,
   date: new Date()
 }
-
-function TodoItem() {
+export type TodoType = {
+  id: string,
+  content: string
+}
+function TodoItem({ props, id } : { props: TodoType , id: number}) {
   const [checked, setChecked] = React.useState(false);
   const [date] = React.useState(new Date());
   const handleCheck = () => {
     setChecked(!checked);
   }
   return (
-    <div className={'flex items-center gap-2 w-full border p-2 bg-white'}>
+    <div className={'flex items-center gap-2 w-full border p-2 bg-white'} id={id.toString()} >
       {/*check*/}
       <Checkbox id={'temp'} onCheckedChange={handleCheck} className={'w-6 h-6 bg-gray-200 border'} />
       <div className={'flex flex-col'}>
@@ -26,7 +29,7 @@ function TodoItem() {
         <Label htmlFor={'temp'}
                className={'font-medium font-serif'
                  + `${(checked) ? ' line-through decoration-1 opacity-50 decoration-gray-500 font-light italic' : ''}`}>
-          {DEFAULT_TASK.content}
+          {props.content}
         </Label>
         <p className={'font-sans text-xs font-light italic'}>{date.toLocaleString()}</p>
       </div>
