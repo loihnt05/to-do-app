@@ -9,8 +9,9 @@ export type TodoType = {
   content: string,
   icon?: React.ReactNode,
   checked?: boolean,
-  date: Date,
+  date: string,
 }
+
 function TodoItem({ props } : { props: TodoType }) {
   const [checked, setChecked] = React.useState(false);
   const handleCheck = () => {
