@@ -4,22 +4,15 @@ import { Button } from '@/components/ui/button.tsx';
 import * as React from 'react';
 import { Pencil, Trash } from 'lucide-react';
 
-const DEFAULT_TASK = {
-  id: 1,
-  content: 'Hello my name is ho nguyen tai loi',
-  checked: false,
-  date: new Date()
-}
 export type TodoType = {
   id: string,
   content: string,
   icon?: React.ReactNode,
   checked?: boolean,
-  date?: Date,
+  date: Date,
 }
 function TodoItem({ props } : { props: TodoType }) {
   const [checked, setChecked] = React.useState(false);
-  const [date] = React.useState(new Date());
   const handleCheck = () => {
     setChecked(!checked);
   }
@@ -35,7 +28,7 @@ function TodoItem({ props } : { props: TodoType }) {
           {props.content}
           {props.icon}
         </Label>
-        <p className={'font-sans text-xs font-light italic'}>{date.toLocaleString()}</p>
+        <p className={'font-sans text-xs font-light italic'}>{props.date.toLocaleString()}</p>
       </div>
       {/*edit and remove*/}
       <div className={'grid grid-cols-2 ml-auto gap-1'}>

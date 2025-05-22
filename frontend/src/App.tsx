@@ -15,28 +15,37 @@ import { v4 as uuidv4 } from 'uuid';
 import { Star } from 'lucide-react';
 
 function App() {
-    const taskTodo: TodoType[] = [
-        {
-            id: "0",
-            content: 'default',
-        },
-    ];
     const [value, setValue] = React.useState('');
-    const [tasks, setListTask] = React.useState<TodoType[]>(taskTodo);
+    const [tasks, setListTask] = React.useState<TodoType[]>(
+      () => {
+          if (localStorage.getItem('tasks') === null) {
+              const todo: TodoType = {
+                  id: "0",
+                  content: 'default',
+                  date: new Date(),
+              }
+              localStorage.setItem("tasks", JSON.stringify([todo]));
+              return [todo];
+          } else {
+              const todos: string = localStorage.getItem("tasks") ?? '';
+              return JSON.parse(todos);
+          }
+      }
+    );
     const handleSubmit = () => {
-        // console.log(value);
         const todo: TodoType = {
             id: uuidv4(),
             content: value,
+            date: new Date(),
         }
-        setListTask((prevTask) => [...prevTask, todo]);
+        const newTasks = [...tasks, todo];
+        localStorage.setItem("tasks", JSON.stringify(newTasks))
+        setListTask(newTasks);
         setValue('');
     }
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
-        // console.log(e.target.value);
     }
-
     return (
         <div className="flex flex-col items-center justify-center min-h-svh w-full">
             {/*header*/}
@@ -69,9 +78,9 @@ function App() {
                         const todo: TodoType = {
                             id: current.id,
                             content: current.content,
-                            icon: <Star className="w-5 h-5 text-yellow-500" />
+                            icon: <Star className="w-5 h-5 text-yellow-500" />,
+                            date: current.date,
                         }
-                        // console.log(current.id, " ", current.content);
                         return (<TodoItem key={index} props={todo}/>)
                     })
                 }
