@@ -73,6 +73,12 @@ function TodoMain() {
     localStorage.setItem('tasks', JSON.stringify((newTasks)));
     setListTask(newTasks);
   }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  }
   return (
     <div className="flex flex-col items-center justify-center min-h-svh w-full">
       {/*header*/}
@@ -86,6 +92,7 @@ function TodoMain() {
         )}
                value={value} type="text"
                placeholder={placeHolder}
+               onKeyDown={handleKeyDown}
                onChange={(e) => handleInput(e)} />
         {/*filter*/}
         <Select>
