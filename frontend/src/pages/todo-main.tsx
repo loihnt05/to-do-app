@@ -24,7 +24,9 @@ const DEFAULT_TASK: TodoType = {
 
 function TodoMain() {
   const [value, setValue] = React.useState('');
+
   const [placeHolder, setPlaceHolder] = React.useState('Add task');
+
   const [tasks, setListTask] = React.useState<TodoType[]>(
     () => {
       if (localStorage.getItem('tasks') === null) {
@@ -36,30 +38,41 @@ function TodoMain() {
       }
     },
   );
+
   const handleSubmit = () => {
     if (value === '') {
       setPlaceHolder('Please enter a task');
       return;
     }
+
     const todo: TodoType = {
       id: uuidv4(),
       content: value,
       date: new Date().toLocaleString(),
     };
+
     const newTasks = [...tasks, todo];
     localStorage.setItem('tasks', JSON.stringify(newTasks));
     setListTask(newTasks);
     setValue('');
     setPlaceHolder('Add task');
   };
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
+
   const handleRemoveAll = () => {
     localStorage.removeItem('tasks');
     localStorage.setItem('tasks', JSON.stringify([DEFAULT_TASK]));
     setListTask([DEFAULT_TASK]);
   };
+
+  function handleRemove(id: string) {
+    const newTasks = tasks.filter(task => task.id !== id);
+    localStorage.setItem('tasks', JSON.stringify((newTasks)));
+    setListTask(newTasks);
+  }
   return (
     <div className="flex flex-col items-center justify-center min-h-svh w-full">
       {/*header*/}
@@ -100,13 +113,13 @@ function TodoMain() {
               icon: <Star className="w-5 h-5 text-yellow-500" />,
               date: current.date,
             };
-            return (<TodoItem key={index} props={todo} />);
+            return (<TodoItem key={index} props={todo} deleteTodo={handleRemove}/>);
           })
         }
       </div>
 
       <div>
-        <Button className={'font-bold my-3'} onClick={handleRemoveAll}>Remove all tasks in local storage</Button>
+        <Button className={'font-bold my-3'} onClick={handleRemoveAll}>Clear local storage</Button>
       </div>
     </div>
   );

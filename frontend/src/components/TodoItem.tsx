@@ -12,11 +12,18 @@ export type TodoType = {
   date: string,
 }
 
-function TodoItem({ props } : { props: TodoType }) {
+type TodoItem = {
+  props: TodoType,
+  deleteTodo: (id: string) => void,
+}
+
+function TodoItem({ props, deleteTodo } : TodoItem) {
   const [checked, setChecked] = React.useState(false);
+
   const handleCheck = () => {
     setChecked(!checked);
   }
+
   return (
     <div className={'flex items-center gap-2 w-full border p-2 bg-white'}  >
       {/*check*/}
@@ -33,10 +40,10 @@ function TodoItem({ props } : { props: TodoType }) {
       </div>
       {/*edit and remove*/}
       <div className={'grid grid-cols-2 ml-auto gap-1'}>
-        <Button className={'hover:cursor-pointer'}>
+        <Button className={'hover:cursor-pointer'} >
           <Pencil></Pencil>
         </Button>
-        <Button className={'hover:cursor-pointer'}>
+        <Button className={'hover:cursor-pointer'} onClick={() => deleteTodo(props.id)}>
           <Trash></Trash>
         </Button>
       </div>
