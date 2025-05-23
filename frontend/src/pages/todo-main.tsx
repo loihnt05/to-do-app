@@ -79,6 +79,24 @@ function TodoMain() {
       handleSubmit();
     }
   }
+
+  function handleEdit(id: string, content: string) {
+    const newTasks = tasks.map(task => {
+      if (task.id === id) {
+        return {
+          ...task,
+          content: content,
+        }
+      }
+      else
+      {
+        return task;
+      }
+    });
+
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
+    setListTask(newTasks);
+  }
   return (
     <div className="flex flex-col items-center justify-center min-h-svh w-full">
       {/*header*/}
@@ -120,7 +138,7 @@ function TodoMain() {
               icon: <Star className="w-5 h-5 text-yellow-500" />,
               date: current.date,
             };
-            return (<TodoItem key={index} props={todo} deleteTodo={handleRemove}/>);
+            return (<TodoItem key={index} props={todo} deleteTodo={handleRemove} editTodo={handleEdit}/>);
           })
         }
       </div>
