@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button.tsx';
 import * as React from 'react';
 import { Check, Pencil, Trash, X } from 'lucide-react';
 import { Input } from '@/components/ui/input.tsx';
+import { useEffect, useRef } from 'react';
 
 export type TodoType = {
   id: string,
@@ -22,26 +23,28 @@ type TodoItem = {
 
 function TodoItem({ props, deleteTodo, editTodo }: TodoItem) {
   const [checked, setChecked] = React.useState(false);
-  const [value, setValue] = React.useState('');
-
+  const [value, setValue] = React.useState(props.content);
+  const inputRef = useRef<HTMLInputElement>(null)
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const handleCheck = () => {
-    setChecked(!checked);
-  };
   const handleSaveEdit = () => {
     editTodo(props.id, value);
     setIsEdit(!isEdit);
   };
+  useEffect(() => {
+    if (isEdit) {
+      inputRef.current?.focus();
+    }
+  }, [isEdit]);
   return (
     <div className={'flex items-center gap-2 w-full border p-2 bg-white'}>
       {/*check*/}
-      <Checkbox id={props.id} onCheckedChange={handleCheck}
+      <Checkbox id={props.id} onCheckedChange={() => setChecked(!checked)} checked={checked}
                 className={'w-6 h-6 bg-gray-200 border hover:cursor-pointer'} />
       <div className={'flex flex-col truncate w-full gap-1'}>
         {/*content*/}
         {
-          isEdit ? <Input type="text" className={'w-full font-medium font-serif'} value={value}
+          isEdit ? <Input ref={inputRef} type="text" className={'w-full font-medium font-serif'} value={value}
             onChange={(e) => setValue(e.target.value)}/> :
             <Label htmlFor={props.id}
                    className={'font-medium font-serif hover:cursor-pointer'
