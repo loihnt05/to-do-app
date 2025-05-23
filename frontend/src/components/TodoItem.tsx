@@ -2,7 +2,7 @@ import { Checkbox } from '@/components/ui/checkbox.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import * as React from 'react';
-import { Check, Pencil, Trash } from 'lucide-react';
+import { Check, Pencil, Trash, X } from 'lucide-react';
 import { Input } from '@/components/ui/input.tsx';
 
 export type TodoType = {
@@ -55,9 +55,12 @@ function TodoItem({ props, deleteTodo, editTodo }: TodoItem) {
       {/*edit and remove*/}
       <div className={'ml-auto gap-1'}>
         {isEdit ?
-          <div className={''}>
-            <Button className={'grid-cols-1 mb-4 hover:cursor-pointer'} onClick={handleSaveEdit}>
+          <div className={'grid grid-cols-2 gap-1'}>
+            <Button className={'mb-4 hover:cursor-pointer'} onClick={handleSaveEdit}>
               <Check />
+            </Button>
+            <Button className={'mb-4 hover:cursor-pointer'} onClick={() => setIsEdit(!isEdit)}>
+              <X />
             </Button>
           </div> :
           <div className={'grid grid-cols-2 gap-1'}>
