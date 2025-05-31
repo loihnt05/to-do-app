@@ -38,7 +38,7 @@ function TodoMain() {
         const todos: string = localStorage.getItem('tasks') ?? '';
         const initialTasks: TodoType[] = JSON.parse(todos);
 
-        return produce(initialTasks, draft => {
+        return produce(initialTasks, (draft: TodoType[]) => {
           draft.forEach(task => {
             task.editMode = false;
           });
@@ -61,7 +61,7 @@ function TodoMain() {
       checkedTodo: false,
     };
 
-    const newTasks = produce(tasks, draft => {
+    const newTasks = produce(tasks, (draft: TodoType[]) => {
       draft.push(todo);
     });
 
@@ -82,7 +82,7 @@ function TodoMain() {
   };
 
   function handleRemove(id: string) {
-    const newTasks = produce(tasks, draft => {
+    const newTasks = produce(tasks, (draft: TodoType[]) => {
       const index = draft.findIndex(task => task.id === id);
       if (index !== -1) {
         draft.splice(index, 1);
@@ -100,7 +100,7 @@ function TodoMain() {
   }
 
   function handleEdit(id: string, content: string) {
-    const newTasks = produce(tasks, draft => {
+    const newTasks = produce(tasks, (draft: TodoType[]) => {
       const task = draft.find(task => task.id === id);
       if (task) {
         task.content = content;
@@ -112,7 +112,7 @@ function TodoMain() {
   }
 
   const changeMode = (id: string) => {
-    const newTasks = produce(tasks, draft => {
+    const newTasks = produce(tasks, (draft: TodoType[]) => {
       draft.forEach(task => {
         task.editMode = task.id === id;
       });
@@ -122,7 +122,7 @@ function TodoMain() {
     setTasks(newTasks);
   }
   function handleChecked(id: string) {
-    const newTasks = produce(tasks, draft => {
+    const newTasks = produce(tasks, (draft: TodoType[]) => {
       const task = draft.find(task => task.id === id);
       if (task) {
         task.checkedTodo = !task.checkedTodo;
@@ -199,8 +199,9 @@ function TodoMain() {
               editMode: current.editMode,
               checkedTodo: current.checkedTodo,
             };
-            return (<TodoItem key={index}
-                              props={todo}
+            return (<TodoItem
+                              todo={todo}
+                              // key={index}
                               deleteTodo={handleRemove}
                               editTodo={handleEdit}
                               isEditTodo={todo.editMode}

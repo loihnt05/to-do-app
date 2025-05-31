@@ -16,7 +16,7 @@ export type TodoType = {
 }
 
 type TodoItem = {
-  props: TodoType,
+  todo: TodoType,
   deleteTodo: (id: string) => void,
   isEditTodo: boolean,
   editTodo: (id: string, content: string) => void,
@@ -24,25 +24,25 @@ type TodoItem = {
   handleComplete: (id: string) => void,
 }
 
-function TodoItem({ props, deleteTodo, editTodo, isEditTodo, changeMode, handleComplete }: TodoItem) {
-  const [checked, setChecked] = React.useState(props.checkedTodo ?? false);
-  const [value, setValue] = React.useState(props.content);
+function TodoItem({ todo, deleteTodo, editTodo, isEditTodo, changeMode, handleComplete }: TodoItem) {
+  const [checked, setChecked] = React.useState(todo.checkedTodo ?? false);
+  const [value, setValue] = React.useState(todo.content);
   const [isEdit, setIsEdit] = React.useState(isEditTodo);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Sync state with props when they change
   useEffect(() => {
-    setChecked(props.checkedTodo ?? false);
-    setValue(props.content);
+    setChecked(todo.checkedTodo ?? false);
+    setValue(todo.content);
     setIsEdit(isEditTodo);
-  }, [props.checkedTodo, props.content, isEditTodo]);
+  }, [todo.checkedTodo, todo.content, isEditTodo]);
 
   const handleSaveEdit = () => {
-    editTodo(props.id, value);
+    editTodo(todo.id, value);
     setIsEdit(!isEdit);
   };
   const handleEdit = () => {
-    changeMode(props.id);
+    changeMode(todo.id);
     setIsEdit(!isEdit);
   }
   useEffect(() => {
@@ -53,27 +53,27 @@ function TodoItem({ props, deleteTodo, editTodo, isEditTodo, changeMode, handleC
 
   const handleChecked = () => {
     setChecked(!checked);
-    handleComplete(props.id);
+    handleComplete(todo.id);
   }
 
   return (
-    <div className={'flex items-center gap-2 w-full border p-2 bg-white'}>
+    <div className={'flex items-center gap-2 w-full border p-2 bg-white'} >
       {/*check*/}
-      <Checkbox id={props.id} onCheckedChange={handleChecked} checked={checked}
+      <Checkbox id={todo.id} onCheckedChange={handleChecked} checked={checked}
                 className={'w-6 h-6 bg-gray-200 border hover:cursor-pointer'} />
       <div className={'flex flex-col truncate w-full gap-1'}>
         {/*content*/}
         {
           isEdit? <Input ref={inputRef} type="text" className={'w-full font-medium font-serif'} value={value}
                           onChange={(e) => setValue(e.target.value)} /> :
-            <Label htmlFor={props.id}
+            <Label htmlFor={todo.id}
                    className={'font-medium font-serif hover:cursor-pointer'
                      + `${(checked) ? ' line-through decoration-1 opacity-50 decoration-gray-500 font-light italic' : ''}`}>
-              {props.content}
-              {props.icon}
+              {todo.content}
+              {todo.icon}
             </Label>
         }
-        <p className={'font-sans text-xs font-light italic'}>{props.date.toLocaleString()}</p>
+        <p className={'font-sans text-xs font-light italic'}>{todo.date.toLocaleString()}</p>
       </div>
       {/*edit and remove*/}
       <div className={'ml-auto gap-1'}>
@@ -90,7 +90,7 @@ function TodoItem({ props, deleteTodo, editTodo, isEditTodo, changeMode, handleC
             <Button className={'hover:cursor-pointer'} onClick={handleEdit}>
               <Pencil></Pencil>
             </Button>
-            <Button className={'hover:cursor-pointer'} onClick={() => deleteTodo(props.id)}>
+            <Button className={'hover:cursor-pointer'} onClick={() => deleteTodo(todo.id)}>
               <Trash></Trash>
             </Button>
           </div>
