@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select.tsx';
 import { Star } from 'lucide-react';
 import * as React from 'react';
+import { produce } from 'immer';
 
 const DEFAULT_TASK: TodoType = {
   id: '0',
@@ -35,11 +36,13 @@ function TodoMain() {
         return [DEFAULT_TASK];
       } else {
         const todos: string = localStorage.getItem('tasks') ?? '';
-        const setMode:TodoType[] = JSON.parse(todos);
-        setMode.forEach(task => {
-          task.editMode = false;
+        const initialTasks: TodoType[] = JSON.parse(todos);
+
+        return produce(initialTasks, draft => {
+          draft.forEach(task => {
+            task.editMode = false;
+          });
         });
-        return setMode;
       }
     },
   );
@@ -58,7 +61,10 @@ function TodoMain() {
       checkedTodo: false,
     };
 
-    const newTasks = [...tasks, todo];
+    const newTasks = produce(tasks, draft => {
+      draft.push(todo);
+    });
+
     localStorage.setItem('tasks', JSON.stringify(newTasks));
     setTasks(newTasks);
     setValue('');
@@ -76,8 +82,14 @@ function TodoMain() {
   };
 
   function handleRemove(id: string) {
-    const newTasks = tasks.filter(task => task.id !== id);
-    localStorage.setItem('tasks', JSON.stringify((newTasks)));
+    const newTasks = produce(tasks, draft => {
+      const index = draft.findIndex(task => task.id === id);
+      if (index !== -1) {
+        draft.splice(index, 1);
+      }
+    });
+
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
     setTasks(newTasks);
   }
 
@@ -88,16 +100,10 @@ function TodoMain() {
   }
 
   function handleEdit(id: string, content: string) {
-    const newTasks = tasks.map(task => {
-      if (task.id === id) {
-        return {
-          ...task,
-          content: content,
-        }
-      }
-      else
-      {
-        return task;
+    const newTasks = produce(tasks, draft => {
+      const task = draft.find(task => task.id === id);
+      if (task) {
+        task.content = content;
       }
     });
 
@@ -106,44 +112,31 @@ function TodoMain() {
   }
 
   const changeMode = (id: string) => {
-    const newTasks = tasks.map(task => {
-      if (task.id === id) {
-        return {
-          ...task,
-          editMode: true,
-        }
-      }
-      else
-      {
-        return {
-          ...task,
-          editMode: false,
-        };
-      }
-    })
+    const newTasks = produce(tasks, draft => {
+      draft.forEach(task => {
+        task.editMode = task.id === id;
+      });
+    });
+
     localStorage.setItem('tasks', JSON.stringify(newTasks));
     setTasks(newTasks);
   }
   function handleChecked(id: string) {
-    const newTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return {
-          ...task,
-          checkedTodo: !task.checkedTodo,
-        }
+    const newTasks = produce(tasks, draft => {
+      const task = draft.find(task => task.id === id);
+      if (task) {
+        task.checkedTodo = !task.checkedTodo;
       }
-      else
-      {
-        return task;
-      }
-    })
+    });
+
     localStorage.setItem('tasks', JSON.stringify(newTasks));
     setTasks(newTasks);
   }
   const handleFilter = (value: string) => {
     setSelectFilter(value);
     
-    // Apply the filter based on the new value
+    // No need to use immer here as we're not modifying the tasks
+    // Just filtering them to create a new derived state
     const filtered = value === 'Processing'
       ? tasks.filter(task => !task.checkedTodo)
       : value === 'Completed'
@@ -153,14 +146,15 @@ function TodoMain() {
   }
   
   React.useEffect(() => {
-    // Apply current filter when tasks change
+    // Apply the current filter when tasks change
+    // No need to use immer here as we're just filtering, not modifying
     const filtered = selectFilter === 'Processing'
       ? tasks.filter(task => !task.checkedTodo)
       : selectFilter === 'Completed'
         ? tasks.filter(task => task.checkedTodo)
         : tasks;
     setListFilter(filtered);
-  }, [tasks, selectFilter]); // Added selectFilter as dependency
+  }, [tasks, selectFilter]); // Added selectFilter as a dependency
 
   return (
     <div className="flex flex-col items-center justify-center min-h-svh w-full">
