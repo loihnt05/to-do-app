@@ -23,7 +23,6 @@ public class Todo {
     private Long id;
 
     private String content;
-    private String description;
     private boolean done;
     private LocalDate dueDate; // yyyy-MM-dd
 }
