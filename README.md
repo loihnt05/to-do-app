@@ -25,7 +25,16 @@ Dự án quản các công việc cần làm, người dùng thao tác trực ti
 
 ## Ảnh chụp màn hình
 
-## Đóng góp
+## Goals
+- The skills you will learn from this project include:
+
+- - User authentication
+- - Schema design and Databases
+- - RESTful API design
+- - CRUD operations
+- - Error handling
+- - Security
+
 
 ## Giấy phép
 
